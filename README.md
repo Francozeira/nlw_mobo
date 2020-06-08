@@ -1,19 +1,19 @@
-# Ecoleta :recycle: :purple_heart: :iphone: :computer:
+# Ecoleta :recycle: :iphone: :purple_heart: :computer: :satellite:
 
 Ecoleta is a small project focused on bringing a experience of easy registering and searching for garbage collection locations registered via website or mobile app.
 
-This is a one week fullstack development project, composed of a web page, mobile app and web server with the use of TypeScript to create a Node.js in the backend, web page with React.js and React Native for the mobile app.
+This is a one week fullstack development project, composed of a web page, mobile app and web server with the use of TypeScript to create a Node.js in the backend, web page with React.js and React Native supported with Expo for the mobile app.
 
-This is the web frontend developed for this project, you can check the backend application at [NLW backend](https://github.com/Francozeira/nlw_server), finally, the assets were provided by [Rocketseat](https://rocketseat.com.br/).
+This is the mobile React-native version developed for this project, you can check the web frontend at [Ecoleta web](https://github.com/Francozeira/nlw_web) and backend application at [Ecoleta backend](https://github.com/Francozeira/nlw_server), finally, the assets were provided by [Rocketseat](https://rocketseat.com.br/).
 
 ## Project setup
 
-Make sure to install all dependecies to run the application, on package.json file you can check all npm scripts used.
+Make sure to install all dependecies to run the application, on package.json file you can check all npm scripts used. Please note that this project was designed based on the use of Expo app to compile the project and run it on the go while developing.
 
 ### Compiles for development
 
 ```
-npm run dev
+npm start
 ```
 
 ------------
