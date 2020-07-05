@@ -9,7 +9,7 @@ import { SvgUri } from 'react-native-svg'
 const Points = () => {
     const navigation = useNavigation()
 
-    function handleNavigateToPoints() {
+    function handleNavigateBack() {
       navigation.goBack()
     }
 
@@ -20,7 +20,7 @@ const Points = () => {
     return (
       <>
         <View style={styles.container}>
-            <TouchableOpacity onPress={handleNavigateToPoints}>
+            <TouchableOpacity onPress={handleNavigateBack}>
                 <Icon name="arrow-left" size={20} color="#34cb79"/>
             </TouchableOpacity>
 
@@ -43,7 +43,7 @@ const Points = () => {
                 >
                   <View style={styles.mapMarkerContainer}>
                     <Image style={styles.mapMarkerImage} source={{uri: "https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"}} />
-                    <Text style={styles.mapMarkerTitle}>Mercado</Text>
+                    <Text style={styles.mapMarkerTitle}>Horticulture</Text>
                   </View>
                 </Marker>
               </MapView>
@@ -53,32 +53,32 @@ const Points = () => {
         
         <View style={styles.itemsContainer}>
           <ScrollView horizontal contentContainerStyle= {{ paddingHorizontal: 20 }} >
-            <TouchableOpacity style={styles.item} onPress={handleNavigateToPoints}>
+            <TouchableOpacity style={styles.item} onPress={handleNavigateBack}>
               <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/lamps.svg"/>
               <Text style={styles.itemTitle}>Lamps</Text>
             </TouchableOpacity>      
               
-            <TouchableOpacity style={styles.item} onPress={handleNavigateToPoints}>
+            <TouchableOpacity style={styles.item} onPress={handleNavigateBack}>
+              <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/batteries.svg"/>
+              <Text style={styles.itemTitle}>Lamps</Text>
+            </TouchableOpacity>        
+
+            <TouchableOpacity style={styles.item} onPress={handleNavigateBack}>
               <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/lamps.svg"/>
               <Text style={styles.itemTitle}>Lamps</Text>
             </TouchableOpacity>        
 
-            <TouchableOpacity style={styles.item} onPress={handleNavigateToPoints}>
+            <TouchableOpacity style={styles.item} onPress={handleNavigateBack}>
               <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/lamps.svg"/>
               <Text style={styles.itemTitle}>Lamps</Text>
             </TouchableOpacity>        
 
-            <TouchableOpacity style={styles.item} onPress={handleNavigateToPoints}>
+            <TouchableOpacity style={styles.item} onPress={handleNavigateBack}>
               <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/lamps.svg"/>
               <Text style={styles.itemTitle}>Lamps</Text>
             </TouchableOpacity>        
 
-            <TouchableOpacity style={styles.item} onPress={handleNavigateToPoints}>
-              <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/lamps.svg"/>
-              <Text style={styles.itemTitle}>Lamps</Text>
-            </TouchableOpacity>        
-
-            <TouchableOpacity style={styles.item} onPress={handleNavigateToPoints}>
+            <TouchableOpacity style={styles.item} onPress={handleNavigateBack}>
               <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/lamps.svg"/>
               <Text style={styles.itemTitle}>Lamps</Text>
             </TouchableOpacity> 
