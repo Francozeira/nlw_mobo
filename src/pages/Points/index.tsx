@@ -1,13 +1,48 @@
-import React from 'react'
+import React, { useState, useEffect} from 'react'
 import Constants from 'expo-constants'
 import {Feather as Icon} from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Alert } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 import { SvgUri } from 'react-native-svg'
+import api from '../../services/api'
+import * as Location from 'expo-location'
+
+interface Item {
+  id: number,
+  title: string,
+  image_url: string,
+}
 
 const Points = () => {
     const navigation = useNavigation()
+    const [items, setItems] = useState<Item[]>([])
+    const [selectedItems, setSelectedItems] = useState<number[]>([])
+    const [initialPosition, setInitialPosition] = useState<[number, number]>([0,0])
+
+    useEffect (() => {
+      api.get('items').then(res => {
+        setItems(res.data.serializedItems)
+      })
+    },[])
+
+    useEffect (() => {
+      async function loadPosition() {
+        const { status } = await Location.requestPermissionsAsync()
+
+        if (status !== 'granted'){
+          Alert.alert('Do you have a moment?', 'We really need your permission to access your location')
+          return
+        }
+
+        const location = await Location.getCurrentPositionAsync()
+        const { latitude, longitude } = location.coords
+        setInitialPosition ([latitude, longitude])
+
+      }
+
+      loadPosition()
+    },[])
 
     function handleNavigateBack() {
       navigation.goBack()
@@ -16,6 +51,18 @@ const Points = () => {
     function handleNavigateToDetail() {
       navigation.navigate('Detail')
     }
+
+    function handleSelectedItem(id: number) {
+      const alreaySelected = selectedItems.findIndex(item => item === id)
+
+      if (alreaySelected >= 0) {
+
+          const filteredItems = selectedItems.filter(item => item !== id)
+          setSelectedItems(filteredItems)
+
+      } else setSelectedItems([...selectedItems, id])
+  }
+  
 
     return (
       <>
@@ -28,60 +75,50 @@ const Points = () => {
             <Text style={styles.description}>Find in the map a garbage colletion location.</Text>
 
             <View style={styles.mapContainer}>
-              <MapView style={styles.map} initialRegion={{
-                  latitude: -25.3826403,
-                  longitude: -49.2740054, 
-                  latitudeDelta: 0.014,
-                  longitudeDelta: 0.014
-                }}>
-
-                <Marker style={styles.mapMarker} coordinate= {{
-                    latitude: -25.3826403,
-                    longitude: -49.2740054
+              {initialPosition[0] !== 0 && (
+                <MapView style={styles.map} loadingEnabled={initialPosition[0] === 0}
+                  initialRegion={{
+                    latitude: initialPosition[0],
+                    longitude: initialPosition[1], 
+                    latitudeDelta: 0.014,
+                    longitudeDelta: 0.014
                   }}
-                  onPress={handleNavigateToDetail}
                 >
-                  <View style={styles.mapMarkerContainer}>
-                    <Image style={styles.mapMarkerImage} source={{uri: "https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"}} />
-                    <Text style={styles.mapMarkerTitle}>Horticulture</Text>
-                  </View>
-                </Marker>
-              </MapView>
+
+                  <Marker style={styles.mapMarker} coordinate= {{
+                      latitude: -25.3826403,
+                      longitude: -49.2740054
+                    }}
+                    onPress={handleNavigateToDetail}
+                  >
+                    <View style={styles.mapMarkerContainer}>
+                      <Image style={styles.mapMarkerImage} source={{uri: "https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"}} />
+                      <Text style={styles.mapMarkerTitle}>Horticulture</Text>
+                    </View>
+                  </Marker>
+                </MapView>
+              ) }
               
             </View>
         </View>
         
         <View style={styles.itemsContainer}>
           <ScrollView horizontal contentContainerStyle= {{ paddingHorizontal: 20 }} >
-            <TouchableOpacity style={styles.item} onPress={handleNavigateBack}>
-              <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/lamps.svg"/>
-              <Text style={styles.itemTitle}>Lamps</Text>
-            </TouchableOpacity>      
-              
-            <TouchableOpacity style={styles.item} onPress={handleNavigateBack}>
-              <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/batteries.svg"/>
-              <Text style={styles.itemTitle}>Lamps</Text>
-            </TouchableOpacity>        
 
-            <TouchableOpacity style={styles.item} onPress={handleNavigateBack}>
-              <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/lamps.svg"/>
-              <Text style={styles.itemTitle}>Lamps</Text>
-            </TouchableOpacity>        
-
-            <TouchableOpacity style={styles.item} onPress={handleNavigateBack}>
-              <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/lamps.svg"/>
-              <Text style={styles.itemTitle}>Lamps</Text>
-            </TouchableOpacity>        
-
-            <TouchableOpacity style={styles.item} onPress={handleNavigateBack}>
-              <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/lamps.svg"/>
-              <Text style={styles.itemTitle}>Lamps</Text>
-            </TouchableOpacity>        
-
-            <TouchableOpacity style={styles.item} onPress={handleNavigateBack}>
-              <SvgUri width={42} height={42} uri="http://192.168.1.3:3334/uploads/lamps.svg"/>
-              <Text style={styles.itemTitle}>Lamps</Text>
-            </TouchableOpacity> 
+              {items.map(item => (
+                <TouchableOpacity 
+                  key={String(item.id)} 
+                  style={[
+                    styles.item,
+                    selectedItems.includes(item.id) ? styles.selectedItem : {}
+                  ]} 
+                  onPress={() => handleSelectedItem(item.id)}
+                >
+                  <SvgUri width={42} height={42} uri={ item.image_url} />
+                  <Text style={styles.itemTitle}>{item.title}</Text>
+                </TouchableOpacity>      
+                
+              ))}
           </ScrollView>       
         </View>
         </>
@@ -183,6 +220,6 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       fontSize: 13,
     },
-  });
+});
 
 export default Points
