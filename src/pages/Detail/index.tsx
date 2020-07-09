@@ -1,10 +1,11 @@
 import React, { useState, useEffect} from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image, Linking } from 'react-native'
 import Constants from 'expo-constants'
 import {Feather as Icon, FontAwesome} from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { RectButton } from 'react-native-gesture-handler';
 import api from '../../services/api'
+import * as MailComposer from 'expo-mail-composer'
 
 
 interface Params {
@@ -42,6 +43,17 @@ const Detail = () => {
       navigation.goBack()
     }
 
+    function handleWpp () {
+      Linking.openURL(`whatsapp://send?phone=${data.location.wpp}&text= Hi, i would like to know more about your garbage collection system`)
+    }
+
+    function handleComposeMail () {
+      MailComposer.composeAsync({
+        subject: 'Carbage collection subject',
+        recipients: [data.location.email],
+      })
+    }
+
     if (!data.location) {
       return null
     }
@@ -65,14 +77,14 @@ const Detail = () => {
             </View>
 
             <View style={styles.footer}>
-            <RectButton style={styles.button} onPress={() => {}}>
+            <RectButton style={styles.button} onPress={handleWpp}>
                 <FontAwesome name="whatsapp" color="#FFF" size={20} />
                 <Text style={styles.buttonText}>
                     Whatsapp
                 </Text>
             </RectButton>
 
-            <RectButton style={styles.button} onPress={() => {}}>
+            <RectButton style={styles.button} onPress={handleComposeMail}>
                 <Icon name="mail" color="#FFF" size={20} />
                 <Text style={styles.buttonText}>
                     E-mail
