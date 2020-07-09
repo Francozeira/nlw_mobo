@@ -49,6 +49,24 @@ And that's basically it for starting the development of the project, pretty simp
 
 ## :art: Images
 
+Image:
+
+![](https://pandao.github.io/editor.md/examples/images/4.jpg)
+
+> Follow your heart.
+
+![](https://pandao.github.io/editor.md/examples/images/8.jpg)
+
+> 图为：厦门白城沙滩
+
+图片加链接 (Image + Link)：
+
+[![](https://pandao.github.io/editor.md/examples/images/7.jpg)](https://pandao.github.io/editor.md/examples/images/7.jpg "李健首张专辑《似水流年》封面")
+
+> 图为：李健首张专辑《似水流年》封面
+
+## :art: Images
+
 <!-- Badges -->
 
 [node_version_badge]: https://img.shields.io/badge/node-12.17.0-green

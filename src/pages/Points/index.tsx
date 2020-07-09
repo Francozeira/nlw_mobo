@@ -63,7 +63,6 @@ const Points = () => {
           items: [5]
         }
       }).then(res => {
-        console.log(res);
         setPoints(res.data)
       })
     },[])
@@ -72,8 +71,8 @@ const Points = () => {
       navigation.goBack()
     }
 
-    function handleNavigateToDetail() {
-      navigation.navigate('Detail')
+    function handleNavigateToDetail(id: number) {
+      navigation.navigate('Detail', { point_id: id })
     }
 
     function handleSelectedItem(id: number) {
@@ -113,7 +112,7 @@ const Points = () => {
                         latitude: point.lat,
                         longitude: point.long
                       }}
-                      onPress={handleNavigateToDetail}
+                      onPress={() => handleNavigateToDetail(point.id)}
                     >
                       <View style={styles.mapMarkerContainer}>
                         <Image style={styles.mapMarkerImage} source={{uri: point.image}} />
@@ -122,17 +121,6 @@ const Points = () => {
                     </Marker>
                   ))}
 
-                  <Marker style={styles.mapMarker} coordinate= {{
-                      latitude: -25.3906815,
-                      longitude: -49.267095
-                    }}
-                    onPress={handleNavigateToDetail}
-                  >
-                    <View style={styles.mapMarkerContainer}>
-                      <Image style={styles.mapMarkerImage} source={{uri: "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60"}} />
-                      <Text style={styles.mapMarkerTitle}>Auto repair</Text>
-                    </View>
-                  </Marker>
                 </MapView>
               ) }
               
