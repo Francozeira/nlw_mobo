@@ -12,6 +12,16 @@ interface Item {
   id: number,
   title: string,
   image_url: string,
+  lat: number,
+  long: number
+}
+
+interface Point {
+  id: number,
+  name: string,
+  image: string,
+  lat: number,
+  long: number,
 }
 
 const Points = () => {
@@ -19,6 +29,7 @@ const Points = () => {
     const [items, setItems] = useState<Item[]>([])
     const [selectedItems, setSelectedItems] = useState<number[]>([])
     const [initialPosition, setInitialPosition] = useState<[number, number]>([0,0])
+    const [points, setPoints] = useState<Point[]>([])
 
     useEffect (() => {
       api.get('items').then(res => {
@@ -42,6 +53,19 @@ const Points = () => {
       }
 
       loadPosition()
+    },[])
+
+    useEffect (() => {
+      api.get('locations', {
+        params: {
+          city: 'Curitiba',
+          state: 'PR',
+          items: [5]
+        }
+      }).then(res => {
+        console.log(res);
+        setPoints(res.data)
+      })
     },[])
 
     function handleNavigateBack() {
@@ -84,16 +108,29 @@ const Points = () => {
                     longitudeDelta: 0.014
                   }}
                 >
+                  {points.map(point => (
+                    <Marker style={styles.mapMarker} key={String(point.id)} coordinate= {{
+                        latitude: point.lat,
+                        longitude: point.long
+                      }}
+                      onPress={handleNavigateToDetail}
+                    >
+                      <View style={styles.mapMarkerContainer}>
+                        <Image style={styles.mapMarkerImage} source={{uri: point.image}} />
+                        <Text style={styles.mapMarkerTitle}>{point.name}</Text>
+                      </View>
+                    </Marker>
+                  ))}
 
                   <Marker style={styles.mapMarker} coordinate= {{
-                      latitude: -25.3826403,
-                      longitude: -49.2740054
+                      latitude: -25.3906815,
+                      longitude: -49.267095
                     }}
                     onPress={handleNavigateToDetail}
                   >
                     <View style={styles.mapMarkerContainer}>
-                      <Image style={styles.mapMarkerImage} source={{uri: "https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"}} />
-                      <Text style={styles.mapMarkerTitle}>Horticulture</Text>
+                      <Image style={styles.mapMarkerImage} source={{uri: "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60"}} />
+                      <Text style={styles.mapMarkerTitle}>Auto repair</Text>
                     </View>
                   </Marker>
                 </MapView>
