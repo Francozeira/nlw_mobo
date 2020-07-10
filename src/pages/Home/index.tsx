@@ -1,41 +1,66 @@
-import React from 'react';
+import React, { useState} from 'react';
 import { Feather as Icon} from '@expo/vector-icons'
-import { View, Image, StyleSheet, Text, ImageBackground } from 'react-native';
+import { View, Image, StyleSheet, Text, ImageBackground, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native'
 
 
 const Home = () => {
   const navigation = useNavigation()
+  const [uf,setUf] = useState('')
+  const [city,setCity] = useState('')
 
   function handleNavigateToPoints() {
-    navigation.navigate('Points')
+    navigation.navigate('Points', {
+      uf,
+      city
+    })
   }
 
   return (
-    <ImageBackground 
-      source={require('../../assets/home-background.png')} 
-      style={styles.container}
-      imageStyle={{ width: 274, height: 368 }}
-    >
-      <View style={styles.main}>
-      <Image source={require('../../assets/logo.png')} />
-      <Text style={styles.title}>Your waste collection marketplace.</Text>
-      <Text style={styles.description}>We help people to find garbage collection locations in a efficient way.</Text>
-      </View>
-
-      <View style={styles.footer}>
-        <RectButton style={styles.button} onPress={handleNavigateToPoints}>
-          <View style={styles.buttonIcon}>
-            <Icon name="arrow-right" color="#FFF" size={24} ></Icon>
+    <KeyboardAvoidingView style= {{flex: 1}} behavior={Platform.OS === 'ios' ? 'padding' : undefined} >
+      <ImageBackground 
+        source={require('../../assets/home-background.png')} 
+        style={styles.container}
+        imageStyle={{ width: 274, height: 368 }}
+      >
+        <View style={styles.main}>
+          <Image source={require('../../assets/logo.png')} />
+          <View>
+            <Text style={styles.title}>Your waste collection marketplace.</Text>
+            <Text style={styles.description}>We help people to find garbage collection locations in a efficient way.</Text>
           </View>
-          <Text style={styles.buttonText}>
-            Register
-          </Text>
-        </RectButton>
-      </View>
+        </View>
 
-    </ImageBackground>
+        <View style={styles.footer}>
+          <TextInput 
+            style={styles.input} 
+            placeholder="Type a state initials" 
+            maxLength={2}
+            autoCapitalize="characters"
+            autoCorrect={false}
+            value={uf} 
+            onChangeText={setUf} 
+          />
+          <TextInput 
+            style={styles.input} 
+            placeholder="Type a city name" 
+            autoCorrect={false}
+            value={city} 
+            onChangeText={setCity} 
+          />
+          <RectButton style={styles.button} onPress={handleNavigateToPoints}>
+            <View style={styles.buttonIcon}>
+              <Icon name="arrow-right" color="#FFF" size={24} ></Icon>
+            </View>
+            <Text style={styles.buttonText}>
+              Search
+            </Text>
+          </RectButton>
+        </View>
+
+      </ImageBackground>
+    </KeyboardAvoidingView>
   )
 }
 
