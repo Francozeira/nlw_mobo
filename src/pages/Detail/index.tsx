@@ -15,6 +15,7 @@ interface Params {
 interface Data {
   location: {
     image: string,
+    image_url: string,
     name: string,
     email: string,
     wpp: string,
@@ -65,7 +66,7 @@ const Detail = () => {
                     <Icon name="arrow-left" size={20} color="#34cb79"/>
                 </TouchableOpacity>
 
-            <Image style={styles.pointImage} source= {{uri: data.location.image}}></Image>
+            <Image style={styles.pointImage} source= {{uri: data.location.image_url}}></Image>
             <Text style={styles.pointName}>{data.location.name}</Text>
             <Text style={styles.pointItems}>{data.items.map(item => item.title).join(', ')}</Text>
 
